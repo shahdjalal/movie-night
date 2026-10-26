@@ -1,0 +1,19 @@
+{
+  "appTitle": "My Store",
+  "name": "Name",
+  "nameDesc":"Enter your Name",
+  "email": "Email",
+  "emailDesc":"Enter your email",
+  "phone": "Phone",
+  "phoneDecs":"Enter your Phone",
+  "password": "Password",
+  "passwordDesc":"Enter your password ",
+  "passwordConfirm": "Password Confirmation",
+  "passwordConfirmDesc":"Enter your password again",
+  "required": "This field  is required",
+  "length":"Name must not be less than 3 characters",
+  "validEmail": "Please enter a valid email address",
+  "match": "Passwords do not match",
+  "login": "Sign Up",
+  "welcome": "Welcome {name}"
+}
