@@ -63,4 +63,45 @@ class TmdbService {
       throw Exception('Failed to load movie details: ${response.statusCode}');
     }
   }
+
+  Future<List<Movie>> searchMovies(String query) async {
+  if (token.isEmpty) {
+    throw Exception(
+      'TMDB token is missing. Run with --dart-define=TMDB_TOKEN=...',
+    );
+  }
+
+  final url = Uri.parse('$baseUrl/search/movie').replace(
+    queryParameters: {
+      'query': query,
+      'include_adult': 'false',
+      'language': 'en-US',
+      'page': '1',
+    },
+  );
+
+  final response = await http.get(
+    url,
+    headers: {
+      'Authorization': 'Bearer $token',
+      'accept': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    final List results = data['results'] ?? [];
+
+    return results
+        .map((json) => Movie.fromJson(
+              Map<String, dynamic>.from(json),
+            ))
+        .toList();
+  } else {
+    throw Exception(
+      'Failed to search movies: ${response.statusCode}',
+    );
+  }
+}
+
 }
