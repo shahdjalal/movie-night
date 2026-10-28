@@ -101,9 +101,9 @@ Movie data and images are provided by [The Movie Database (TMDB)](https://www.th
 
 **Shahd Marouf**
 
-Computer Engineering Graduate
+Computer Engineer
 
-[GitHub Profile](https://github.com/YOUR-USERNAME)
+[GitHub Profile](https://github.com/shahdjalal)
 
 ---
 
