@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/movie.dart';
 import '../services/tmdb_service.dart';
 import '../widgets/movie_card.dart';
@@ -15,14 +16,13 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
-
   final TmdbService tmdbService = TmdbService();
 
   Timer? _debounce;
 
   List<Movie> searchResults = [];
-
   String selectedGenre = 'All';
+
   bool isLoading = false;
   String? errorMessage;
 
@@ -36,6 +36,25 @@ class _SearchScreenState extends State<SearchScreen> {
     'Sci-Fi',
     'Adventure',
   ];
+
+  String _localizedGenre(AppLocalizations l10n, String genre) {
+    switch (genre) {
+      case 'All':
+        return l10n.all;
+      case 'Action':
+        return l10n.action;
+      case 'Drama':
+        return l10n.drama;
+      case 'Crime':
+        return l10n.crime;
+      case 'Sci-Fi':
+        return l10n.sciFi;
+      case 'Adventure':
+        return l10n.adventure;
+      default:
+        return genre;
+    }
+  }
 
   List<Movie> get filteredMovies {
     return searchResults.where((movie) {
@@ -96,8 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
       setState(() {
         isLoading = false;
-        errorMessage =
-            'Could not load movies. Check your connection and try again.';
+        errorMessage = 'error';
       });
     }
   }
@@ -111,14 +129,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final movies = filteredMovies;
     final query = searchController.text.trim();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Search Movies',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.searchMovies,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -139,7 +158,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
               },
               decoration: InputDecoration(
-                hintText: 'Search for a movie...',
+                hintText: l10n.searchHint,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: query.isNotEmpty
                     ? IconButton(
@@ -171,7 +190,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 final genre = genres[index];
 
                 return ChoiceChip(
-                  label: Text(genre),
+                  label: Text(_localizedGenre(l10n, genre)),
                   selected: selectedGenre == genre,
                   onSelected: (_) {
                     setState(() {
@@ -185,13 +204,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
           const SizedBox(height: 15),
 
-          Expanded(child: _buildResults(query, movies)),
+          Expanded(child: _buildResults(query, movies, l10n)),
         ],
       ),
     );
   }
 
-  Widget _buildResults(String query, List<Movie> movies) {
+  Widget _buildResults(
+    String query,
+    List<Movie> movies,
+    AppLocalizations l10n,
+  ) {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -203,14 +226,14 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(errorMessage!, textAlign: TextAlign.center),
+              Text(l10n.couldNotLoadMovies, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () {
                   final requestId = ++_searchRequestId;
                   _searchMovies(query, requestId);
                 },
-                child: const Text('Try Again'),
+                child: Text(l10n.tryAgain),
               ),
             ],
           ),
@@ -221,17 +244,16 @@ class _SearchScreenState extends State<SearchScreen> {
     if (query.length < 2) {
       return Center(
         child: Text(
-          query.isEmpty
-              ? 'Search for a movie 🎬'
-              : 'Enter at least 2 characters',
+          query.isEmpty ? l10n.searchHint : l10n.enterAtLeastTwoCharacters,
           style: const TextStyle(fontSize: 18),
+          textAlign: TextAlign.center,
         ),
       );
     }
 
     if (movies.isEmpty) {
-      return const Center(
-        child: Text('No movies found 🎬', style: TextStyle(fontSize: 18)),
+      return Center(
+        child: Text(l10n.noMoviesFound, style: const TextStyle(fontSize: 18)),
       );
     }
 

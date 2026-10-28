@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../l10n/app_localizations.dart';
 import '../services/movie_lists_service.dart';
 import '../models/movie.dart';
 import '../services/tmdb_service.dart';
@@ -44,14 +46,62 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       if (!mounted) return;
 
       setState(() {
-        errorMessage = 'Could not load movie details.';
+        errorMessage = 'load_failed';
         isLoading = false;
       });
     }
   }
 
+  String localizedGenre(AppLocalizations l10n, String genre) {
+    switch (genre) {
+      case 'Action':
+        return l10n.action;
+      case 'Adventure':
+        return l10n.adventure;
+      case 'Animation':
+        return l10n.animation;
+      case 'Comedy':
+        return l10n.comedy;
+      case 'Crime':
+        return l10n.crime;
+      case 'Documentary':
+        return l10n.documentary;
+      case 'Drama':
+        return l10n.drama;
+      case 'Family':
+        return l10n.family;
+      case 'Fantasy':
+        return l10n.fantasy;
+      case 'History':
+        return l10n.history;
+      case 'Horror':
+        return l10n.horror;
+      case 'Music':
+        return l10n.music;
+      case 'Mystery':
+        return l10n.mystery;
+      case 'Romance':
+        return l10n.romance;
+      case 'Sci-Fi':
+      case 'Science Fiction':
+        return l10n.sciFi;
+      case 'TV Movie':
+        return l10n.tvMovie;
+      case 'Thriller':
+        return l10n.thriller;
+      case 'War':
+        return l10n.war;
+      case 'Western':
+        return l10n.western;
+      default:
+        return genre;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     // نعرض بيانات القائمة مؤقتًا حتى تصل التفاصيل الكاملة.
     final movie = movieDetails ?? widget.movie;
 
@@ -96,13 +146,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 children: [
                   if (errorMessage != null) ...[
                     Text(
-                      errorMessage!,
+                      l10n.couldNotLoadMovieDetails,
                       style: const TextStyle(color: Colors.redAccent),
                     ),
                     TextButton.icon(
                       onPressed: loadMovieDetails,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Try again'),
+                      label: Text(l10n.tryAgain),
                     ),
                     const SizedBox(height: 12),
                   ],
@@ -137,10 +187,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       Text(
                         movie.releaseDate.isNotEmpty
                             ? movie.releaseDate
-                            : 'Release date unavailable',
+                            : l10n.releaseDateUnavailable,
                       ),
 
-                      if (movie.runtime > 0) Text('${movie.runtime} min'),
+                      if (movie.runtime > 0)
+                        Text('${movie.runtime} ${l10n.minutes}'),
                     ],
                   ),
 
@@ -150,16 +201,19 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       spacing: 8,
                       runSpacing: 4,
                       children: movie.genres.map((genre) {
-                        return Chip(label: Text(genre));
+                        return Chip(label: Text(localizedGenre(l10n, genre)));
                       }).toList(),
                     ),
                   ],
 
                   const SizedBox(height: 24),
 
-                  const Text(
-                    'Overview',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    l10n.overview,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
 
                   const SizedBox(height: 10),
@@ -167,7 +221,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   Text(
                     movie.overview.isNotEmpty
                         ? movie.overview
-                        : 'No overview available.',
+                        : l10n.noOverviewAvailable,
                     style: TextStyle(
                       fontSize: 16,
                       height: 1.6,
@@ -197,7 +251,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     : Icons.favorite_border,
                               ),
                               label: Text(
-                                isFavorite ? 'Favorited' : 'Favorite',
+                                isFavorite ? l10n.favorited : l10n.favorite,
                               ),
                             ),
                           ),
@@ -213,7 +267,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     : Icons.bookmark_border,
                               ),
                               label: Text(
-                                isInWatchlist ? 'In Watchlist' : 'Watchlist',
+                                isInWatchlist
+                                    ? l10n.inWatchlist
+                                    : l10n.watchlist,
                               ),
                             ),
                           ),

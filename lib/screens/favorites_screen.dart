@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../l10n/app_localizations.dart';
 import '../services/movie_lists_service.dart';
 import '../widgets/movie_card.dart';
 
@@ -8,6 +10,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lists = MovieListsService.instance;
+    final l10n = AppLocalizations.of(context)!;
 
     return AnimatedBuilder(
       animation: lists,
@@ -16,32 +19,37 @@ class FavoritesScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'Favorites',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            title: Text(
+              l10n.favorites,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           body: movies.isEmpty
-              ? const Center(
+              ? Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.favorite_border,
                         size: 60,
                         color: Colors.grey,
                       ),
-                      SizedBox(height: 12),
-                      Text('No favorite movies yet'),
-                      SizedBox(height: 6),
-                      Text('Add movies from their details page'),
+                      const SizedBox(height: 12),
+                      Text(l10n.noFavoriteMoviesYet),
+                      const SizedBox(height: 6),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          l10n.addMoviesFromDetailsPage,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ],
                   ),
                 )
               : GridView.builder(
                   padding: const EdgeInsets.all(16),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 14,
                     mainAxisSpacing: 20,

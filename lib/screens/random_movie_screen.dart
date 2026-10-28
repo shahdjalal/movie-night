@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/movie.dart';
 import '../services/tmdb_service.dart';
 import '../widgets/movie_card.dart';
@@ -15,9 +16,7 @@ class RandomMovieScreen extends StatefulWidget {
 class _RandomMovieScreenState extends State<RandomMovieScreen> {
   final TmdbService tmdbService = TmdbService();
 
-  // نخزن الأفلام التي جلبناها من TMDB
   List<Movie>? popularMovies;
-
   Movie? selectedMovie;
   String selectedGenre = 'All';
 
@@ -33,6 +32,25 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
     'Adventure',
   ];
 
+  String localizedGenre(AppLocalizations l10n, String genre) {
+    switch (genre) {
+      case 'All':
+        return l10n.all;
+      case 'Action':
+        return l10n.action;
+      case 'Drama':
+        return l10n.drama;
+      case 'Crime':
+        return l10n.crime;
+      case 'Sci-Fi':
+        return l10n.sciFi;
+      case 'Adventure':
+        return l10n.adventure;
+      default:
+        return genre;
+    }
+  }
+
   Future<void> pickMovie() async {
     setState(() {
       isLoading = true;
@@ -40,10 +58,8 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
     });
 
     try {
-      // نجلب الأفلام من API عند الحاجة فقط
       popularMovies ??= await tmdbService.getPopularMovies();
 
-      // نفلتر الأفلام حسب النوع المختار
       final movies = selectedGenre == 'All'
           ? popularMovies!
           : popularMovies!
@@ -56,14 +72,11 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
         setState(() {
           selectedMovie = null;
           isLoading = false;
-          errorMessage =
-              'No popular movies found for this genre. '
-              'Try another genre.';
+          errorMessage = 'noMoviesForGenre';
         });
         return;
       }
 
-      // نختار فيلمًا عشوائيًا
       final random = Random();
       final movie = movies[random.nextInt(movies.length)];
 
@@ -76,26 +89,26 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
 
       setState(() {
         isLoading = false;
-        errorMessage =
-            'Could not load movies. Check your connection and TMDB token.';
+        errorMessage = 'connectionError';
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Pick a Movie')),
+      appBar: AppBar(title: Text(l10n.pickAMovie)),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const Text(
-              'What do you feel like watching?',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              l10n.whatToWatch,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 20),
 
             Wrap(
@@ -103,7 +116,7 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
               runSpacing: 8,
               children: genres.map((genre) {
                 return ChoiceChip(
-                  label: Text(genre),
+                  label: Text(localizedGenre(l10n, genre)),
                   selected: selectedGenre == genre,
                   onSelected: (_) {
                     setState(() {
@@ -123,17 +136,22 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
                 child: isLoading
                     ? const CircularProgressIndicator()
                     : errorMessage != null
-                    ? Text(errorMessage!, textAlign: TextAlign.center)
+                    ? Text(
+                        errorMessage == 'noMoviesForGenre'
+                            ? l10n.noPopularMoviesForGenre
+                            : l10n.connectionAndTokenError,
+                        textAlign: TextAlign.center,
+                      )
                     : selectedMovie == null
-                    ? const Column(
+                    ? Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.movie_filter, size: 80),
-                          SizedBox(height: 15),
+                          const Icon(Icons.movie_filter, size: 80),
+                          const SizedBox(height: 15),
                           Text(
-                            'Choose a genre and let us pick!',
+                            l10n.chooseGenrePrompt,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 17),
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       )
@@ -148,7 +166,7 @@ class _RandomMovieScreenState extends State<RandomMovieScreen> {
                 onPressed: isLoading ? null : pickMovie,
                 icon: const Icon(Icons.casino),
                 label: Text(
-                  isLoading ? 'Finding a movie...' : 'Pick a Movie',
+                  isLoading ? l10n.findingMovie : l10n.pickAMovie,
                   style: const TextStyle(fontSize: 17),
                 ),
               ),

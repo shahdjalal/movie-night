@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/movie.dart';
 import '../services/tmdb_service.dart';
 import '../widgets/movie_card.dart';
@@ -52,11 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Movie Night',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.appTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -77,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const Icon(Icons.error_outline, size: 60),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Failed to load movies',
-                      style: TextStyle(
+                    Text(
+                      l10n.failedToLoadMovies,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -96,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         loadMovies();
                       },
-                      child: const Text('Try Again'),
+                      child: Text(l10n.tryAgain),
                     ),
                   ],
                 ),
@@ -107,11 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Find your next movie 🍿',
-                      style: TextStyle(
+                      l10n.findNextMovie,
+                      style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                       ),
@@ -123,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Discover something you will love.',
+                      l10n.discoverSomethingYouWillLove,
                       style: TextStyle(
                         color: Colors.grey.shade400,
                         fontSize: 15,
@@ -133,11 +136,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 28),
 
-                  _buildSection(title: 'Popular', movies: popularMovies),
+                  _buildSection(title: l10n.popular, movies: popularMovies),
 
                   const SizedBox(height: 30),
 
-                  _buildSection(title: 'Top Rated', movies: topRatedMovies),
+                  _buildSection(title: l10n.topRated, movies: topRatedMovies),
 
                   const SizedBox(height: 30),
 
@@ -164,27 +167,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(Icons.casino, size: 38),
-                            SizedBox(width: 16),
+                            const Icon(Icons.casino, size: 38),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Can’t decide?',
-                                    style: TextStyle(
+                                    l10n.cantDecide,
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 4),
-                                  Text('Let us pick a movie for you!'),
+                                  const SizedBox(height: 4),
+                                  Text(l10n.letUsPickMovie),
                                 ],
                               ),
                             ),
-                            Icon(Icons.arrow_forward_ios),
+                            const Icon(Icons.arrow_forward_ios),
                           ],
                         ),
                       ),
@@ -202,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text( 
+          child: Text(
             title,
             style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
           ),

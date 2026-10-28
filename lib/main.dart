@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'l10n/app_localizations.dart';
 import 'screens/home_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/favorites_screen.dart';
@@ -23,12 +25,24 @@ class MovieNightApp extends StatefulWidget {
 
 class _MovieNightAppState extends State<MovieNightApp> {
   bool darkMode = true;
+  Locale locale = const Locale('en');
+
+  void changeLanguage(Locale newLocale) {
+    setState(() {
+      locale = newLocale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Movie Night',
+
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
 
       themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
 
@@ -61,6 +75,8 @@ class _MovieNightAppState extends State<MovieNightApp> {
             darkMode = value;
           });
         },
+        locale: locale,
+        onLocaleChanged: changeLanguage,
       ),
     );
   }
@@ -69,11 +85,15 @@ class _MovieNightAppState extends State<MovieNightApp> {
 class MainScreen extends StatefulWidget {
   final bool darkMode;
   final ValueChanged<bool> onDarkModeChanged;
+  final Locale locale;
+  final ValueChanged<Locale> onLocaleChanged;
 
   const MainScreen({
     super.key,
     required this.darkMode,
     required this.onDarkModeChanged,
+    required this.locale,
+    required this.onLocaleChanged,
   });
 
   @override
@@ -85,6 +105,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final screens = <Widget>[
       const HomeScreen(),
       const SearchScreen(),
@@ -93,6 +115,8 @@ class _MainScreenState extends State<MainScreen> {
       SettingsScreen(
         darkMode: widget.darkMode,
         onDarkModeChanged: widget.onDarkModeChanged,
+        locale: widget.locale,
+        onLocaleChanged: widget.onLocaleChanged,
       ),
     ];
 
@@ -106,31 +130,31 @@ class _MainScreenState extends State<MainScreen> {
             currentIndex = index;
           });
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home),
+            label: l10n.home,
           ),
           NavigationDestination(
-            icon: Icon(Icons.search_outlined),
-            selectedIcon: Icon(Icons.search),
-            label: 'Search',
+            icon: const Icon(Icons.search_outlined),
+            selectedIcon: const Icon(Icons.search),
+            label: l10n.search,
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Favorites',
+            icon: const Icon(Icons.favorite_border),
+            selectedIcon: const Icon(Icons.favorite),
+            label: l10n.favorites,
           ),
           NavigationDestination(
-            icon: Icon(Icons.bookmark_border),
-            selectedIcon: Icon(Icons.bookmark),
-            label: 'Watchlist',
+            icon: const Icon(Icons.bookmark_border),
+            selectedIcon: const Icon(Icons.bookmark),
+            label: l10n.watchlist,
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: l10n.settings,
           ),
         ],
       ),

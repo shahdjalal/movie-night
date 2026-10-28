@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../l10n/app_localizations.dart';
 import '../services/movie_lists_service.dart';
 import '../widgets/movie_card.dart';
 
@@ -8,6 +10,7 @@ class WatchlistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lists = MovieListsService.instance;
+    final l10n = AppLocalizations.of(context)!;
 
     return AnimatedBuilder(
       animation: lists,
@@ -16,21 +19,31 @@ class WatchlistScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'Watchlist',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            title: Text(
+              l10n.watchlist,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           body: movies.isEmpty
-              ? const Center(
+              ? Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.bookmark_border, size: 60, color: Colors.grey),
-                      SizedBox(height: 12),
-                      Text('Your watchlist is empty'),
-                      SizedBox(height: 6),
-                      Text('Add movies you want to watch'),
+                      const Icon(
+                        Icons.bookmark_border,
+                        size: 60,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(l10n.yourWatchlistIsEmpty),
+                      const SizedBox(height: 6),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          l10n.addMoviesYouWantToWatch,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ],
                   ),
                 )
