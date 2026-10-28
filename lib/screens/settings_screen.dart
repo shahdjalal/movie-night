@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final bool darkMode;
+  final ValueChanged<bool> onDarkModeChanged;
+  const SettingsScreen({
+    super.key,
+    required this.darkMode,
+    required this.onDarkModeChanged,
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool darkMode = true;
   String language = 'English';
 
   @override
@@ -36,12 +41,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Dark Mode'),
               subtitle: const Text('Use dark theme throughout the app'),
               secondary: const Icon(Icons.dark_mode),
-              value: darkMode,
-              onChanged: (value) {
-                setState(() {
-                  darkMode = value;
-                });
-              },
+              value: widget.darkMode,
+              onChanged: widget.onDarkModeChanged,
             ),
           ),
 
