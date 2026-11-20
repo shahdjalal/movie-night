@@ -28,7 +28,7 @@
   "findingMovie": "Finding a movie...",
   "noMoviesFound": "No movies found 🎬",
   "enterAtLeastTwoCharacters": "Enter at least 2 characters",
-  "couldNotLoadMovies": "Could not load movies. Check your connection and try again.",
+  "couldNotLoadMovies": "Could not load movies. Check your internet connection and try again.",
   "tryAgain": "Try Again",
   "noPopularMoviesForGenre": "No popular movies found for this genre. Try another genre.",
   "connectionAndTokenError": "Could not load movies. Check your connection and TMDB token."
@@ -66,6 +66,18 @@
 "tvMovie": "TV Movie",
 "thriller": "Thriller",
 "war": "War",
-"western": "Western"
+"western": "Western",
+"shareMovie": "Share movie",
+"shareMovieMessage": "🎬 Check out this movie: {title}\n{url}",
+"@shareMovieMessage": {
+  "placeholders": {
+    "title": {
+      "type": "String"
+    },
+    "url": {
+      "type": "String"
+    }
+  }
+}
 
 }

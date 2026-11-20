@@ -199,4 +199,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get western => 'ويسترن';
+
+  @override
+  String get shareMovie => 'مشاركة الفيلم';
+
+  @override
+  String shareMovieMessage(String title, String url) {
+    return '🎬 شوف هذا الفيلم: $title\n$url';
+  }
 }

@@ -66,6 +66,18 @@
 "tvMovie": "فيلم تلفزيوني",
 "thriller": "تشويق",
 "war": "حرب",
-"western": "ويسترن"
+"western": "ويسترن",
+"shareMovie": "مشاركة الفيلم",
+"shareMovieMessage": "🎬 شوف هذا الفيلم: {title}\n{url}",
+"@shareMovieMessage": {
+  "placeholders": {
+    "title": {
+      "type": "String"
+    },
+    "url": {
+      "type": "String"
+    }
+  }
+}
 
 }

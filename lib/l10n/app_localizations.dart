@@ -260,7 +260,7 @@ abstract class AppLocalizations {
   /// No description provided for @couldNotLoadMovies.
   ///
   /// In en, this message translates to:
-  /// **'Could not load movies. Check your connection and try again.'**
+  /// **'Could not load movies. Check your internet connection and try again.'**
   String get couldNotLoadMovies;
 
   /// No description provided for @tryAgain.
@@ -478,6 +478,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Western'**
   String get western;
+
+  /// No description provided for @shareMovie.
+  ///
+  /// In en, this message translates to:
+  /// **'Share movie'**
+  String get shareMovie;
+
+  /// No description provided for @shareMovieMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'🎬 Check out this movie: {title}\n{url}'**
+  String shareMovieMessage(String title, String url);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

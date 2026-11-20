@@ -90,7 +90,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterAtLeastTwoCharacters => 'Enter at least 2 characters';
 
   @override
-  String get couldNotLoadMovies => 'Could not load movies. Check your connection and try again.';
+  String get couldNotLoadMovies => 'Could not load movies. Check your internet connection and try again.';
 
   @override
   String get tryAgain => 'Try Again';
@@ -199,4 +199,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get western => 'Western';
+
+  @override
+  String get shareMovie => 'Share movie';
+
+  @override
+  String shareMovieMessage(String title, String url) {
+    return '🎬 Check out this movie: $title\n$url';
+  }
 }

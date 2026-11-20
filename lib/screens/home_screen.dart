@@ -41,11 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoading = false;
         errorMessage = null;
       });
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('Error loading movies: $e');
+      debugPrintStack(stackTrace: stackTrace);
+
       if (!mounted) return;
 
       setState(() {
-        errorMessage = e.toString();
+        errorMessage = 'load_failed';
         isLoading = false;
       });
     }
@@ -88,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(errorMessage!, textAlign: TextAlign.center),
+                    Text(l10n.couldNotLoadMovies, textAlign: TextAlign.center),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {

@@ -4,6 +4,7 @@ import '../l10n/app_localizations.dart';
 import '../services/movie_lists_service.dart';
 import '../models/movie.dart';
 import '../services/tmdb_service.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final Movie movie;
@@ -50,6 +51,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         isLoading = false;
       });
     }
+  }
+
+  Future<void> shareMovie() async {
+    final movie = movieDetails ?? widget.movie;
+    final l10n = AppLocalizations.of(context)!;
+    final movieUrl = 'https://www.themoviedb.org/movie/${movie.id}';
+
+    final message = l10n.shareMovieMessage(movie.title, movieUrl);
+
+    await SharePlus.instance.share(ShareParams(text: message));
   }
 
   String localizedGenre(AppLocalizations l10n, String genre) {
@@ -113,6 +124,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             pinned: true,
             backgroundColor: const Color(0xFF0F0F14),
             iconTheme: const IconThemeData(color: Colors.white),
+            actions: [
+              IconButton(
+                tooltip: l10n.shareMovie,
+                icon: const Icon(Icons.share),
+                onPressed: shareMovie,
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: 'movie-${widget.movie.id}',
